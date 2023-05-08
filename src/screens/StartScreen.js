@@ -1,6 +1,6 @@
 import React from 'react'
 import Background from '../components/Background'
-import Logo from '../components/Logo'
+// import Logo from '../components/Logo'
 import Header from '../components/Header'
 import Button from '../components/Button'
 import Paragraph from '../components/Paragraph'
@@ -8,10 +8,10 @@ import Paragraph from '../components/Paragraph'
 export default function StartScreen({ navigation }) {
   return (
     <Background>
-      <Logo />
-      <Header>Login Template</Header>
+      {/* <Logo /> */}
+      <Header>EMPLOYEE REWARD SYSTEM</Header>
       <Paragraph>
-        The easiest way to start with your amazing application.
+      "Our system is to recognize, acknowledge the efforts and contributions of employees.""
       </Paragraph>
       <Button
         mode="contained"
