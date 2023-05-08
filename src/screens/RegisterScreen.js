@@ -48,7 +48,8 @@ export default function RegisterScreen({ navigation }) {
     <Background>
       <BackButton goBack={navigation.goBack} />
       {/* <Logo /> */}
-      <Header>Create Account</Header>
+      <Header style={{fontSize:25,fontWeight:"bold",position:"relative",bottom:13,textAlign:'center',color:"#7149C6"}}>CREATE ACCOUNT
+        </Header>
       <TextInput
         label="Name"
         returnKeyType="next"

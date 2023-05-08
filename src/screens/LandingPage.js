@@ -1,54 +1,74 @@
 import React from 'react';
-import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
-import * as eva from '@eva-design/eva';
-import Button from '../components/Button'
-import { ApplicationProvider, Layout } from '@ui-kitten/components';
+import { StyleSheet, ImageBackground, View, Text } from 'react-native';
+import { Button } from 'react-native-paper';
 
-export default function LandingPage ({ navigation }) {
+export default function LandingPage({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>EMPLOYEE REWARDS SYSTEM</Text>
-      <Text style={styles.subtitle}>LANDING PAGE.</Text>
-      <Button
-      mode="contained"
-        style={styles.button}
-        onPress={() => navigation.navigate('StartScreen')}
-      >
-        <Text style={styles.buttonText}>Get started</Text>
-      </Button>
+      <ImageBackground source={{ uri: 'https://media.istockphoto.com/id/968383644/vector/talent-award-employee-of-the-month-outstanding-achievement-first-place-winner-reward-for-good.jpg?s=612x612&w=0&k=20&c=OlXhoqYZNp4oCasUhwYYVpcxOG_4pypJhhrp5kiwcms=' }} style={styles.image} >
+        <View style={styles.overlay} />
+        <View style={styles.content}>
+          <Text style={styles.title}>EMPLOYEE REWARDS SYSTEM</Text>
+          <Text style={styles.subtitle}> Recognizing and Rewarding Employees
+with Excellence</Text>
+          <Button
+            mode="contained"
+            style={styles.button}
+            onPress={() => navigation.navigate('StartScreen')}
+          >
+            <Text style={styles.buttonText}>Get started</Text>
+          </Button>
+        </View>
+      </ImageBackground>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
     justifyContent: 'center',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  content: {
+    flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#fff',
+    marginBottom: 16,
+    textAlign:"center",
+    position:'relative',
+    bottom:170
   },
   subtitle: {
-    fontSize: 18,
-    fontStyle: 'italic',
+    fontSize: 20,
+    color: '#fff',
+    marginBottom: 32,
+    position:'relative',
+    bottom:70,
+    textAlign:"center",
   },
   button: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    position:'relative',
-    top:30
+    width: '80%',
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    marginTop: 16,
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
+    color: '#fff',
     fontWeight: 'bold',
-    alignSelf: 'center',
-  }
+    fontSize: 16,
+  },
 });
-

@@ -33,7 +33,7 @@ export default function LoginScreen({ navigation }) {
     <Background>
       <BackButton goBack={navigation.goBack} />
       {/* <Logo /> */}
-      <Header>EMPLOYEE REWARD SYSTEM
+      <Header style={{fontSize:29,fontWeight:"bold",position:"relative",bottom:20,textAlign:'center',color:"#7149C6"}}>EMPLOYEE LOGIN
         </Header>
       <TextInput
         label="Email"
