@@ -101,7 +101,7 @@ export default function SignInPage({ navigation }) {
         </Button>
         <View style={styles.row}>
 <Text style={styles.label}>Don’t have an account? </Text>
-<TouchableOpacity onPress={() => navigation.replace('SignUpPage')}>
+<TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
 <Text style={styles.link}>Sign up</Text>
 </TouchableOpacity>
 </View>
@@ -114,12 +114,15 @@ export default function SignInPage({ navigation }) {
 
 const styles = StyleSheet.create({
 container: {
+  top: '35%',
 width: '90%',
 maxWidth: 340,
 alignSelf: 'center',
 alignItems: 'center',
 justifyContent: 'center',
 flex: 1,
+position: 'absolute'
+
 },
 label: {
 color: theme.colors.secondary,

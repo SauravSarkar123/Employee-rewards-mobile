@@ -67,8 +67,9 @@ export default function RegisterScreen({ navigation }) {
       });
 
       console.log(response.data);
-      navigation.navigate("LoginScreen");
+      history.push("/login");
     } catch (error) {
+      console.log("wrongyyyy");
       console.error(error);
     }
   };
