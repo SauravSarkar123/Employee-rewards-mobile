@@ -16,33 +16,66 @@ import { addressValidator } from '../helpers/addressValidator'
 
 
 export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState({ value: '', error: '' })
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
-  const [phonenumber, setPhonenumber] = useState({ value: '', error: '' })
-  const [address, setAddress] = useState({ value: '', error: '' })
+  const API_URL = "http://localhost:8800";
+  const [name, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(" ");
+  const [mobile, setMobile] = useState("");
+  const [address, setAddress] = useState(" ");
+  const [DOJ, setDOJ] = useState(0);
+  const [checkbox, setCheckbox] = useState(false);
+  const [wallet, setWallet] = useState("");
+  const history = useHistory();
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const handleRegister = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(`${API_URL}/register`, {
+        name,
+        mobile,
+        address,
+        DOJ,
+        password,
+        email,
+        wallet,
+      });
+      console.log("hiighji");
+      console.log(response.data);
+      history.push("/login");
+    } catch (error) {
+      console.log("wrongyyyy");
+      console.error(error);
+    }
+  };
+  // const [name, setName] = useState({ value: '', error: '' })
+  // const [email, setEmail] = useState({ value: '', error: '' })
+  // const [password, setPassword] = useState({ value: '', error: '' })
+  // const [phonenumber, setPhonenumber] = useState({ value: '', error: '' })
+  // const [address, setAddress] = useState({ value: '', error: '' })
   
-  const onSignUpPressed = () => {
-    const nameError = nameValidator(name.value)
-    const emailError = emailValidator(email.value)
-    const passwordError = passwordValidator(password.value)
-    const phonenumberError = phoneNumberValidator(phonenumber.value)
-    const addressError = addressValidator(address.value)
+  // const onSignUpPressed = () => {
+  //   const nameError = nameValidator(name.value)
+  //   const emailError = emailValidator(email.value)
+  //   const passwordError = passwordValidator(password.value)
+  //   const phonenumberError = phoneNumberValidator(phonenumber.value)
+  //   const addressError = addressValidator(address.value)
     
 
-    if (emailError || passwordError || nameError || phonenumberError) {
-      setName({ ...name, error: nameError })
-      setEmail({ ...email, error: emailError })
-      setPassword({ ...password, error: passwordError })
-      setPhonenumber({...phonenumber, error: phonenumberError })
-      setAddress({...address, error: addressError})
-      return
-    }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Dashboard' }],
-    })
-  }
+  //   if (emailError || passwordError || nameError || phonenumberError) {
+  //     setName({ ...name, error: nameError })
+  //     setEmail({ ...email, error: emailError })
+  //     setPassword({ ...password, error: passwordError })
+  //     setPhonenumber({...phonenumber, error: phonenumberError })
+  //     setAddress({...address, error: addressError})
+  //     return
+  //   }
+  //   navigation.reset({
+  //     index: 0,
+  //     routes: [{ name: 'Dashboard' }],
+  //   })
+  // }
 
   return (
     <Background>
