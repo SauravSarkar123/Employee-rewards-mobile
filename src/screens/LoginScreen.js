@@ -16,7 +16,7 @@ import { emailValidator } from '../helpers/emailValidator';
 import { passwordValidator } from '../helpers/passwordValidator';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = 'http://192.168.26.107:8000';
 
 export default function SignInPage({ navigation }) {
   // const [email, setEmail] = useState({ value: '', error: '' });

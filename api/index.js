@@ -119,11 +119,11 @@ mongoose.connection.on("connected", ()=>{
     console.log("Mongodb connected")
 })
 const corsOptions = {
-  origin: ['http://localhost:19006', 'exp://192.168.207.104:19000'],
+  origin: ['http://localhost:19006', 'http://192.168.26.107:19000'],
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+app.use(cors({ origin: corsOptions, credentials: true }));
 
 app.use(cookieParser());
 app.use(express.json())
