@@ -114,12 +114,15 @@ export default function SignInPage({ navigation }) {
 
 const styles = StyleSheet.create({
 container: {
+  top: '35%',
 width: '90%',
 maxWidth: 340,
 alignSelf: 'center',
 alignItems: 'center',
 justifyContent: 'center',
 flex: 1,
+position: 'absolute'
+
 },
 label: {
 color: theme.colors.secondary,
