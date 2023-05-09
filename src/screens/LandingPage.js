@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontFamily: fontLoaded ? 'SecularOnnne' : null,
+    fontFamily: fontLoaded ? 'SecularOnne' : null,
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000',

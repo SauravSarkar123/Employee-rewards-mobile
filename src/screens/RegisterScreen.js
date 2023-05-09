@@ -25,7 +25,6 @@ export default function RegisterScreen({ navigation }) {
   const [DOJ, setDOJ] = useState(0);
   const [checkbox, setCheckbox] = useState(false);
   const [wallet, setWallet] = useState("");
-  const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const handleRegister = async (event) => {
@@ -43,8 +42,7 @@ export default function RegisterScreen({ navigation }) {
       });
       console.log("hiighji");
       console.log(response.data);
-      history.push("/login");
-    } catch (error) {
+      navigation.navigate("Login");    } catch (error) {
       console.log("wrongyyyy");
       console.error(error);
     }
