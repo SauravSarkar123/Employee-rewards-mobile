@@ -18,7 +18,7 @@ import {walletIdValidator} from '../helpers/walletIdValidator'
 import {DOJValidator} from'../helpers/phoneNumberValidator'
 
 export default function RegisterScreen({ navigation }) {
-  const API_URL = "http://localhost:8000";
+  const API_URL = 'http://192.168.26.107:8000';
   const [name, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState(" ");
@@ -67,8 +67,7 @@ export default function RegisterScreen({ navigation }) {
       });
 
       console.log(response.data);
-      history.push("/login");
-    } catch (error) {
+      navigation.navigate("LoginScreen");    } catch (error) {
       console.log("wrongyyyy");
       console.error(error);
     }
