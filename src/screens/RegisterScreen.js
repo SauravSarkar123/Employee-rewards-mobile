@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity ,DatePickerAndroid} from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import {DatePickerAndroid} from "react-native-datepicker";
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
 // import Logo from '../components/Logo'
@@ -15,10 +16,10 @@ import { nameValidator } from '../helpers/nameValidator'
 import { phoneNumberValidator} from '../helpers/phoneNumberValidator'
 import { addressValidator } from '../helpers/addressValidator'
 import {walletIdValidator} from '../helpers/walletIdValidator'
-import {DOJValidator} from'../helpers/phoneNumberValidator'
+import {DOJValidator} from'../helpers/dateofJoining'
 
 export default function RegisterScreen({ navigation }) {
-  const API_URL = 'http://192.168.26.107:8000';
+const API_URL = 'http://192.168.26.107:8000';
   const [name, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState(" ");
@@ -36,16 +37,16 @@ export default function RegisterScreen({ navigation }) {
     const phonenumberError = phoneNumberValidator(mobile.value)
     const addressError = addressValidator(address.value)
     const walletIdError = walletIdValidator(wallet.value)
-    const dateOfJoining = dateofJoiningValidator(DOJ.value)
+    const dateOfJoiningError = DOJValidator(DOJ.value)
 
     if (emailError || passwordError || nameError || phonenumberError) {
-      setName({ ...name, error: nameError })
+      setUsername({ ...name, error: nameError })
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
-      setMobile({...phonenumber, error: phonenumberError })
+      setMobile({...mobile, error: mobile })
       setAddress({...address, error: addressError})
-      setWallet({...walletId, error: walletIdError})
-      setDOJ({...dateOfJoining, error: dateOfJoiningError})
+      setWallet({...wallet, error: walletIdError})
+      setDOJ({...DOJ, error: dateOfJoiningError})
       return
     }
     navigation.reset({

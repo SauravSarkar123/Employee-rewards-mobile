@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { TextInput, DatePickerAndroid } from 'react-native';
-export function DOJValidator(openDatePicker) {
+import { TextInput } from 'react-native';
+import {DatePickerAndroid} from "react-native-datepicker";
+export function DOJValidator(openDatePickerr) {
 const openDatePicker = async () => {
   try {
     const { action, year, month, day } = await DatePickerAndroid.open({
