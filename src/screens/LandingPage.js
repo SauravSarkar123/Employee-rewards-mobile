@@ -39,17 +39,24 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: -400
+  },
+  titlee: {
+    fontSize: 30,
+    marginTop:300,   
+
+
   },
   title: {
     fontFamily: fontLoaded ? 'SecularOnne' : null,
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: 'bold',
     color: '#000',
     marginBottom: 16,
     textAlign:"center",
     position:'relative',
     bottom:170,
-    marginTop:300,   
+    marginTop:200,   
 
   },
   subtitle: {
@@ -80,7 +87,9 @@ const styles = StyleSheet.create({
       <ImageBackground source={s} style={styles.image} >
         <View style={styles} />
         <View style={styles.content}>
-          <Text style={styles.title}>EMPLOYEE REWARDS SYSTEM</Text>
+          <Text style={styles.titlee}>Welcome to </Text>
+          <Text style={styles.title}>Employee Reward System</Text>
+
           {/* <Text style={styles.subtitle}> Recognizing and Rewarding Employees
 with Excellence</Text> */}
           <Button

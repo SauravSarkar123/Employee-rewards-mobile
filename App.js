@@ -1,25 +1,34 @@
-import React from 'react'
-import { Provider } from 'react-native-paper'
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { theme } from './src/core/theme'
+import React, { useState, useEffect } from 'react';
+import { Provider } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { theme } from './src/core/theme';
 import {
   StartScreen,
   LoginScreen,
   RegisterScreen,
   ResetPasswordScreen,
   Dashboard,
-  LandingPage
-} from './src/screens'
+  LandingPage,
+} from './src/screens';
+import LogoScreen from './src/screens/LogoScreen';
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
 export default function App() {
+  const [showLogo, setShowLogo] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowLogo(false);
+    }, 1000); // 3 seconds
+  }, []);
+
   return (
     <Provider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Landing"
+          initialRouteName={showLogo ? 'LogoScreen' : 'LoginScreen'}
           screenOptions={{
             headerShown: false,
           }}
@@ -33,8 +42,9 @@ export default function App() {
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
           />
+          <Stack.Screen name="LogoScreen" component={LogoScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
-  )
+  );
 }
