@@ -74,7 +74,7 @@ export default function SignInPage({ navigation }) {
           EMPLOYEE LOGIN
         </Header>
         <TextInput
-  label="name"
+  label="UserName"
   returnKeyType="next"
   value={name.value}
   onChangeText={(text) => setname(text)}
