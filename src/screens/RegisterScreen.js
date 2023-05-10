@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity , ScrollView} from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import {DatePickerAndroid} from "react-native-datepicker";
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
@@ -139,6 +139,7 @@ const API_URL = 'http://192.168.26.107:8000';
     <ScrollView>
 
     <Background>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <BackButton goBack={navigation.goBack} />
       {/* <Logo /> */}
       <Header>Create New Account</Header>
@@ -233,6 +234,7 @@ const API_URL = 'http://192.168.26.107:8000';
           <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>
+      </KeyboardAvoidingView>
     </Background>
     </ScrollView>
 
@@ -240,6 +242,9 @@ const API_URL = 'http://192.168.26.107:8000';
 }
 
 const styles = StyleSheet.create({
+  container:{
+    position:'absolute'
+  },
   row: {
     flexDirection: 'row',
     marginTop: 4,

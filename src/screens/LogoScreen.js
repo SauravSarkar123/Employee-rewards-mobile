@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {Video} from "expo-av";
+import g from "../assets/log4.mp4"
 
 const LogoScreen = () => {
   const navigation = useNavigation();
