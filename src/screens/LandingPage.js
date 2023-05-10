@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ImageBackground, View, Text } from 'react-native';
+import { StyleSheet, ImageBackground, View, Text , TouchableHighlight} from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Font from 'expo-font';
 import s from '../assets/rrr.png'
@@ -7,6 +7,8 @@ import s from '../assets/rrr.png'
 
 export default function LandingPage({ navigation }) {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [isLoginPressed, setIsLoginPressed] = useState(false);
+  const [isSignupPressed, setIsSignupPressed] = useState(false);
 
 useEffect(() => {
   async function loadFonts() {
@@ -67,18 +69,43 @@ const styles = StyleSheet.create({
     bottom:70,
     textAlign:"center",
   },
-  button: {
-    width: '40%',
-    height: 48,
-    borderRadius:10,
-    justifyContent: 'center',
-    marginTop: -126,
-    backgroundColor:"blue"
+  btn: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: -200
+  },
+  button1: {
+    
+    backgroundColor: '#0000FF',
+    borderRadius: 10,
+    paddingVertical: 12,
+    width: 100,
+    marginVertical: 10,
+    borderColor: '#fff',
+  },
+  button2: {
+    
+    backgroundColor: '#0000FF',
+    borderRadius: 10,
+    paddingVertical: 12,
+    width: 100,
+    marginVertical: 10,
+    borderColor: '#fff',
+    marginTop: -52,
+    marginLeft: 150
   },
   buttonText: {
     color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 10,
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  paragraph: {
+    fontSize: 20,
+    color: 'black',
+    marginBottom: 0,
+    position:"relative",
+    bottom:100,
+    fontWeight: 'bold'
   },
 });
 
@@ -89,16 +116,41 @@ const styles = StyleSheet.create({
         <View style={styles.content}>
           <Text style={styles.titlee}>Welcome to </Text>
           <Text style={styles.title}>Employee Reward System</Text>
+<Text style={styles.paragraph}>  "Unlock your rewards with just a click</Text><Text style={styles.paragraph}> Sign up or log in now!"</Text>    
 
           {/* <Text style={styles.subtitle}> Recognizing and Rewarding Employees
 with Excellence</Text> */}
-          <Button
-            mode="contained"
-            style={styles.button}
-            onPress={() => navigation.navigate('StartScreen')}
-          >
-            <Text style={styles.buttonText}>Get started</Text>
-          </Button>
+          <View style={styles.btn}>
+      <TouchableHighlight
+  style={[
+    styles.button1,
+    isLoginPressed // change the background color if the button is pressed
+  ]}
+  onPress={() => {
+    setIsLoginPressed(true);
+    navigation.navigate('LoginScreen');
+  }}
+  onHideUnderlay={() => setIsLoginPressed(false)} // reset the button state when the user removes their touch
+  onShowUnderlay={() => setIsLoginPressed(true)} // update the button state when the user touches the button
+>
+  <Text style={styles.buttonText}>Login</Text>
+</TouchableHighlight>
+
+<TouchableHighlight
+  style={[
+    styles.button2,
+    isSignupPressed  // change the background color if the button is pressed
+  ]}
+  onPress={() => {
+    setIsSignupPressed(true);
+    navigation.navigate('RegisterScreen');
+  }}
+  onHideUnderlay={() => setIsSignupPressed(false)} // reset the button state when the user removes their touch
+  onShowUnderlay={() => setIsSignupPressed(true)} // update the button state when the user touches the button
+>
+  <Text style={styles.buttonText}>Signup</Text>
+</TouchableHighlight>
+</View>
         </View>
       </ImageBackground>
     </View>

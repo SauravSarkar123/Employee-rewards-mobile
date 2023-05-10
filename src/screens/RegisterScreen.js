@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity , ScrollView} from 'react-native'
 import {DatePickerAndroid} from "react-native-datepicker";
 import { Text } from 'react-native-paper'
 import Background from '../components/Background'
@@ -135,11 +135,15 @@ const API_URL = 'http://192.168.26.107:8000';
 };
 
   return (
+
+    <ScrollView>
+
     <Background>
       <BackButton goBack={navigation.goBack} />
       {/* <Logo /> */}
       <Header>Create New Account</Header>
-      <TextInput
+      <Text>Create a new account for u emp</Text>
+      <TextInput style={styles.inp}
         label="Name"
         returnKeyType="next"
         value={name.value}
@@ -148,6 +152,7 @@ const API_URL = 'http://192.168.26.107:8000';
         errorText={name.error}
       />
       <TextInput
+      style={styles.inp}
         label="Mobile"
         returnKeyType="next"
         keyboardType="phone-pad"
@@ -158,6 +163,7 @@ const API_URL = 'http://192.168.26.107:8000';
       />
      
       <TextInput
+      style={styles.inp}
         label="Address"
         returnKeyType="next"
         multiline={true}
@@ -170,6 +176,7 @@ const API_URL = 'http://192.168.26.107:8000';
       />
 
       <TextInput
+      style={styles.inp}
         label="walletId"
         returnKeyType="next"
         keyboardType="default"
@@ -180,6 +187,7 @@ const API_URL = 'http://192.168.26.107:8000';
       />
 
       <TextInput
+      style={styles.inp}
         label="DOJ"
         returnKeyType="next"
         value={DOJ.value}
@@ -189,6 +197,7 @@ const API_URL = 'http://192.168.26.107:8000';
         errorText={DOJ.error}
       />
       <TextInput
+      style={styles.inp}
         label="Email"
         returnKeyType="next"
         value={email.value}
@@ -201,6 +210,7 @@ const API_URL = 'http://192.168.26.107:8000';
         keyboardType="email-address"
       />
       <TextInput
+      style={styles.inp}
         label="Password"
         returnKeyType="done"
         value={password.value}
@@ -224,6 +234,8 @@ const API_URL = 'http://192.168.26.107:8000';
         </TouchableOpacity>
       </View>
     </Background>
+    </ScrollView>
+
   )
 }
 
@@ -235,6 +247,14 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: 'bold',
     color: theme.colors.primary,
+  },
+  inp: {
+    backgroundColor: theme.colors.surface,
+    fontSize: 14, // set smaller font size
+    height: 40,
+    marginVertical: 5,
+    width: '100%',
+    
   },
 })
 
@@ -358,21 +378,21 @@ const styles = StyleSheet.create({
 //     )
 //     }
     
-//     const styles = StyleSheet.create({
-//     row: {
-//     flexDirection: 'row',
-//     marginTop: 4,
-//     },
-//     label: {
-//     color: theme.colors.secondary,
-//     fontSize: 14,
-//     },
-//     link: {
-//     fontWeight: 'bold',
-//     fontSize: 14,
-//     color: theme.colors.primary,
-//     },
-//     button: {
-//     marginTop: 24,
-//     },
-//     })
+    // const styles = StyleSheet.create({
+    // row: {
+    // flexDirection: 'row',
+    // marginTop: 4,
+    // },
+    // label: {
+    // color: theme.colors.secondary,
+    // fontSize: 14,
+    // },
+    // link: {
+    // fontWeight: 'bold',
+    // fontSize: 14,
+    // color: theme.colors.primary,
+    // },
+    // button: {
+    // marginTop: 24,
+    // },
+    // })
