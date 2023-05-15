@@ -1,11 +1,7 @@
-export function walletIdValidator(walletId) {
-const handleWalletIdChange = (value) => {
-    setWalletId(value);
-
-    // Validate wallet ID
-    if (!/^[a-zA-Z0-9]+$/.test(value)) {
-      setError('Please enter a valid wallet ID');
-    } else {
-      setError('');
-    }
-  }};
+export function walletIdValidator(wallet) {
+  if (!wallet) {
+    return `Wallet Address can't be empty`;
+  } else if (wallet.length !== 42) {
+    return `This is not a valid wallet address`;
+  }
+};

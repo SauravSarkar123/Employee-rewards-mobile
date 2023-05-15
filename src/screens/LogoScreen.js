@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import g from "../assets/log4.mp4"
+import { Video } from 'expo-av';
+import g from "../assets/log3.gif"
 
 const LogoScreen = () => {
   const navigation = useNavigation();
@@ -14,8 +15,8 @@ const LogoScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Video
-        source={require('../assets/log4.mp4')}
+      <Image
+        source={require('../assets/log3.gif')}
         style={styles.video}
         resizeMode="cover"
         shouldPlay={true}
