@@ -10,72 +10,115 @@ import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
 import axios from 'axios'
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
-import { nameValidator } from '../helpers/nameValidator'
-import { phoneNumberValidator} from '../helpers/phoneNumberValidator'
-import { addressValidator } from '../helpers/addressValidator'
-import {walletIdValidator} from '../helpers/walletIdValidator'
-import {DOJValidator} from'../helpers/dateofJoining'
+
 
 export default function RegisterScreen({ navigation }) {
 const API_URL = 'http://192.168.26.107:8000';
-const [name, setUsername] = useState({ value: "", error: "" });
-const [password, setPassword] = useState({ value: "", error: "" });
-const [email, setEmail] = useState({ value: "", error: "" });
-const [mobile, setMobile] = useState({ value: "", error: "" });
-const [address, setAddress] = useState({ value: "", error: "" });
-const [DOJ, setDOJ] = useState({ value: "", error: "" });
-const [checkbox, setCheckbox] = useState(false);
-const [wallet, setWallet] = useState({ value: "", error: "" });
+const [name, setName] = useState('')
+  const [nameError, setNameError] = useState('')
 
-const onSignUpPressed = () => {
-  const nameError = nameValidator(name.value)
-  const emailError = emailValidator(email.value)
-  const passwordError = passwordValidator(password.value)
-  const phonenumberError = phoneNumberValidator(mobile.value)
-  const addressError = addressValidator(address.value)
-  const walletIdError = walletIdValidator(wallet.value)
-  const dateOfJoiningError = DOJValidator(DOJ.value)
+  const [password, setPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
 
-  if (emailError || passwordError || nameError || phonenumberError || addressError || walletIdError || dateOfJoiningError) {
-    setUsername({ ...name, error: nameError })
-    setEmail({ ...email, error: emailError })
-    setPassword({ ...password, error: passwordError })
-    setMobile({ ...mobile, error: phonenumberError })
-    setAddress({ ...address, error: addressError })
-    setWallet({ ...wallet, error: walletIdError })
-    setDOJ({ ...DOJ, error: dateOfJoiningError })
-    return
-  } 
-  navigation.reset({
-    index: 0,
-    routes: [{ name: 'Dashboard' }],
-  })
-}
+  const [email, setEmail] = useState('')
+  const [emailError, setEmailError] = useState('')
+
+  const [mobile, setMobile] = useState('')
+  const [mobileError, setMobileError] = useState('')
+
+  const [address, setAddress] = useState('')
+  const [addressError, setAddressError] = useState('')
+
+  const [DOJ, setDOJ] = useState('')
+  const [DOJError, setDOJError] = useState('')
+
+  const [checkbox, setCheckbox] = useState(false)
+
+  const [wallet, setWallet] = useState('')
+  const [walletError, setWalletError] = useState('')
+
+  const nameValidator = (text) => {
+    if (!text) {
+      return 'Name field is required.'
+    }
+    return ''
+  }
+
+
+  const passwordValidator = (password) => {
+    if (!password || password.length < 6) {
+      return 'Password must be at least 6 characters long.'
+    }
+    return ''
+  }
+
+  const emailValidator = (email) => {
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+    if (!email) {
+      return 'Email field is required.'
+    }
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address.'
+    }
+    return ''
+  }
+
+  const phoneNumberValidator = (phoneNumber) => {
+    const phoneRegex = /^[0-9]{10}$/
+    if (!phoneNumber) {
+      return 'Mobile field is required.'
+    }
+    if (!phoneRegex.test(phoneNumber)) {
+      return 'Please enter a valid 10-digit mobile number.'
+    }
+    return ''
+  }
+
+  const addressValidator = (text) => {
+    if (!text) {
+      return 'Address field is required.'
+    }
+    return ''
+  }
+
+  const walletIdValidator = (walletId) => {
+    if (!walletId) {
+      return `Wallet Address can't be empty`;
+    } else if (walletId.length !== 42) {
+      return `This is not a valid wallet address`;
+    }
+  }
+ 
+
 const handleNameChange = (text) => {
-  const error = nameValidator(text);
-  setUsername({ value: text, error });
+  setName(text);
+  setNameError(nameValidator(text))
 };
 const handleMobileChange = (number) => {
-  const error = phoneNumberValidator(number);
-  setMobile({ value: number, error });
+  setMobile(number);
+  setMobileError(phoneNumberValidator(number))
+
 };
 const handleEmailChange = (text) => {
-  const error = emailValidator(text);
-  setEmail({ value: text, error });
+  setEmail(text);
+  setEmailError(emailValidator(text))
+
+
 };
 const handlePasswordChange = (text) => {
-  const error = passwordValidator(text);
-  setPassword({ value: text, error });
+  setPassword(text);
+  setPasswordError(passwordValidator(text))
+
 };
 const handleWalletChange = (text) => {
-  const error = walletIdValidator(text);
-  setWallet({ value: text, error });
+  setWallet(text);
+  setWalletError(walletIdValidator(text))
+
 };
 const handleAddressChange = (text) => {
-  const error = addressValidator(text);
-  setAddress({ value: text, error });
+  setAddress(text);
+  setAddressError(addressValidator(text))
+
 };
   const handleRegister = async () => {
     try {
@@ -103,6 +146,8 @@ const handleAddressChange = (text) => {
     if (action !== DatePickerAndroid.dismissedAction) {
       const selectedDate = new Date(year, month, day);
       setDOJ(selectedDate.toDateString());
+      setDOJError('')
+
     }
   } catch ({ code, message }) {
     console.warn('Cannot open date picker', message);
@@ -119,19 +164,19 @@ const handleAddressChange = (text) => {
       <TextInput
         label="Name"
         returnKeyType="next"
-        value={name.value}
+        value={name}
         onChangeText={handleNameChange}
-        error={!!name.error}
-        errorText={name.error}
+        error={!!nameError}
+        errorText={nameError}
       />
       <TextInput
         label="Mobile"
         returnKeyType="next"
         keyboardType="phone-pad"
-        value={mobile.value}
+        value={mobile}
         onChangeText={handleMobileChange}
-        error={!!mobile.error}
-        errorText={mobile.error}
+        error={!!mobileError}
+        errorText={mobileError}
       />
       <TextInput
         label="Address"
@@ -139,10 +184,10 @@ const handleAddressChange = (text) => {
         
         multiline={true}
         numberOfLines={4}
-        value={address.value}
+        value={address}
         onChangeText={handleAddressChange}
-        error={!!address.error}
-        errorText={address.error}
+        error={!!addressError}
+        errorText={addressError}
 
       />
 
@@ -150,10 +195,10 @@ const handleAddressChange = (text) => {
         label="walletId"
         returnKeyType="next"
         keyboardType="default"
-        value={wallet.value}
+        value={wallet}
         onChangeText={handleWalletChange}
-        error={!!wallet.error}
-        errorText={wallet.error}
+        error={!!walletError}
+        errorText={walletError}
       />
 
       <TextInput
@@ -162,16 +207,16 @@ const handleAddressChange = (text) => {
         value={DOJ}
         onFocus={openDatePicker}
         onChangeText={(numericValue)=> setDOJ(numericValue)}
-        error={!!DOJ.error}
-        errorText={DOJ.error}
+        error={!!DOJError}
+        errorText={DOJError}
       />
       <TextInput
         label="Email"
         returnKeyType="next"
-        value={email.value}
+        value={email}
         onChangeText={handleEmailChange}
-        error={!!email.error}
-        errorText={email.error}
+        error={!!emailError}
+        errorText={emailError}
         autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"
@@ -180,10 +225,10 @@ const handleAddressChange = (text) => {
       <TextInput
         label="Password"
         returnKeyType="done"
-        value={password.value}
+        value={password}
         onChangeText={handlePasswordChange}
-        error={!!password.error}
-        errorText={password.error}
+        error={!!passwordError}
+        errorText={passwordError}
         secureTextEntry
       />
        
@@ -191,7 +236,6 @@ const handleAddressChange = (text) => {
         mode="contained"
         onPress={() => {
           handleRegister();
-          onSignUpPressed();
         }}>
         Sign Up
       </Button>

@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export const registerUser = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password,salt);
+    const hash = bcrypt.hashSync(req.body.password.toString(), salt);
     const { name, email,password,  mobile, address, DOJ, wallet } = req.body;
    
   if (!name || !email  || !mobile || !address || !DOJ || !password || !wallet) {

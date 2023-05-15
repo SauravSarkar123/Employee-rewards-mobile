@@ -6,6 +6,6 @@ const handleAddressChange = (value) => {
     if (value.trim().length === 0) {
       setError('Please enter a valid address');
     } else {
-      setError('');
+      setError();
     }
   }};
