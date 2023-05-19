@@ -33,9 +33,13 @@ export const loginUser = async (req, res, next) => {
 
   
 
-    
+    res.setHeader("Set-Cookie", "employee_token=your_cookie_value; Path=/; SameSite=None; Secure");
+
    
-    res.cookie('employee_token', token, { httpOnly: false }).status(200).json({ message: "Login successful", ...otherDetails});
+    res.cookie('employee_token', token,{
+      sameSite: 'Strict',
+      secure:false,
+    }, { httpOnly: false }).status(200).json({token, message: "Login successful", ...otherDetails});
     
   } catch (err) {
     next(err);

@@ -153,22 +153,24 @@ app.use("/", award)
 app.use("/", updateprofileee)
 app.use("/", awardedemployee)
 app.use("/", allAward)
-
 app.use((req, res, next) => {
-    // res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Origin", corsOptions); 
-    
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-    );
-    next();
+  res.header("Access-Control-Allow-Origin", corsOptions);
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
+  
+  // Set the cookie in the response headers
+  res.setHeader("Set-Cookie", "employee_token=your_cookie_value; Path=/; SameSite=None; Secure");
+  
+  next();
 });
+
 app.use("/" , loginComp)
 
 app.use((err,req,res,next)=>{
@@ -183,39 +185,7 @@ app.use((err,req,res,next)=>{
     })
 })
   
-// app.post('/uploadingCertificate', upload.single('certificates'), function (req, res, next) {
-    // app.post('/uploadingCertificate', upload.fields([{name:'certificates', maxCount:1}]), async function (req, res) {
-    // res.send('File uploaded successfully');
-    // if (req.file && req.file.buffer) {
-    //     const hash = crypto.createHash('sha256').update(req.files.buffer);
-    //     console.log(hash)
-    //     // do something with the hash
-    //   } else {
-    //     console.log("hola amigo")
-    //         }
-    // var Certificates = req.files['certificates'][0];
 
-    // const hash = crypto.createHash('sha256').update(Certificates.buffer);
-    // console.log(hash)
-
-// });
-
-
-
-
-
-
-// app.post('/uploadingCertificate', upload.fields([{name:'certificates', maxCount:1}]), async function (req, res) {
-//     const file = req.files['certificates'][0];
-//     console.log(file)
-//     const fileContents = fs.readFileSync(file.path);
-
-//     console.log(fileContents)
-//     const fileBuffer = file.buffer;
-//     const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
-//     console.log('Hash of uploaded file:', hash);
-//     res.send('File uploaded successfully');
-// });
 
 app.post('/uploadingCertificate', upload.single('certificates'), async function (req, res) {
     const file = req.file;

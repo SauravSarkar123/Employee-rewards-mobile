@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Provider } from 'react-native-paper';
+import 'react-native-gesture-handler';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Dimensions } from 'react-native';
 import { theme } from './src/core/theme';
 import {
   LoginScreen,
@@ -12,8 +12,19 @@ import {
   LandingPage,
 } from './src/screens';
 import LogoScreen from './src/screens/LogoScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+function DrawerRoutes() {
+  return (
+    <Drawer.Navigator initialRouteName="Dashboard">
+      <Drawer.Screen name="Dashboard" component={Dashboard} />
+      <Drawer.Screen name="Landing" component={LandingPage} />
+    </Drawer.Navigator>
+  );
+}
 
 export default function App() {
   const [showLogo, setShowLogo] = useState(true);
@@ -25,7 +36,7 @@ export default function App() {
   }, []);
 
   return (
-    <Provider theme={theme}>
+    <PaperProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName={showLogo ? 'LogoScreen' : 'LoginScreen'}
@@ -35,7 +46,7 @@ export default function App() {
         >
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen name="Dashboard" component={DrawerRoutes} />
           <Stack.Screen name="Landing" component={LandingPage} />
           <Stack.Screen
             name="ResetPasswordScreen"
@@ -44,6 +55,6 @@ export default function App() {
           <Stack.Screen name="LogoScreen" component={LogoScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </Provider>
+    </PaperProvider>
   );
 }

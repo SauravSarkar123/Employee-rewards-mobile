@@ -15,8 +15,12 @@ import { theme } from '../core/theme';
 import { emailValidator } from '../helpers/emailValidator';
 import { passwordValidator } from '../helpers/passwordValidator';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Cookie from "js-cookie"
 
-const API_URL = 'http://192.168.26.107:8000';
+
+
+const API_URL = 'http://localhost:8000';
 
 export default function SignInPage({ navigation }) {
   // const [email, setEmail] = useState({ value: '', error: '' });
@@ -28,19 +32,19 @@ export default function SignInPage({ navigation }) {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const onLoginPressed = async () => {
-    // const emailError = emailValidator(email.value);
-    // const passwordError = passwordValidator(password.value);
-
-    // if (passwordError) {
-    //   // setEmail({ ...email, error: emailError });
-    //   setPassword({ ...password, error: passwordError });
-    //   return;
-    // }
-
     try {
-      const response = await axios.post(`${API_URL}/login`, { name,password}, { withCredentials: true });
+      const response = await axios.post(
+        `${API_URL}/login`,
+        { name, password },
+        { withCredentials: true }
+      );
+  
       if (response.status === 200) {
-        setMessage('Login Successful!');
+        const token = response.data.token;
+        await AsyncStorage.setItem('employee_token', token);
+        const storedToken = await AsyncStorage.getItem('employee_token');
+        console.log('Stored Token:', storedToken);       
+         setMessage('Login Successful!');
         navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
       } else {
         setErrorMessage('An error occurred');
@@ -56,6 +60,8 @@ export default function SignInPage({ navigation }) {
       }
     }
   };
+  
+  
 
   return (
     <Background>
@@ -71,7 +77,7 @@ export default function SignInPage({ navigation }) {
             color: '#7149C6',
           }}
         >
-          EMPLOYEE LOGIN
+          Login
         </Header>
         <TextInput
   label="Username"
