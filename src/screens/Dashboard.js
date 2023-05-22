@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,332 +8,207 @@ import {
   Alert,
   SafeAreaView,
   Dimensions,
-  ScrollView, // Import ScrollView
-} from 'react-native'
-import Swipelist from 'react-native-swipeable-list-view'
-import Icon from 'react-native-vector-icons/FontAwesome'
+  ScrollView,
+} from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import {
-
-  PieChart,  LineChart
-  
-} from 'react-native-chart-kit';
-import { useCookies } from "react-cookie";
-
+import jwtDecode from 'jwt-decode';
+import { PieChart } from 'react-native-chart-kit';
+import axios from 'axios';
 
 const Dashboard = () => {
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 4
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "employee_token",
-  ]);
-   AsyncStorage.setItem('employee_token', cookies);
-console.log(AsyncStorage.getItem('employee_token'))
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const [doke, setDoke] = useState('');
+  const [task, setTasks] = useState([]);
 
-  const data = [
-    {
-      name: 'Frontend Development',
-      status: '',
-    },
-    {
-      name: 'Backend Development',
-      status: '',
-    },
-    {
-      name: 'Blockchain',
-      status: '',
-    },
-    {
-      name: 'Documasdasdasdasentation',
-      status: '',
-    },
-    {
-      name: 'Fronteasdasdnd Development',
-      status: '',
-    },
-    {
-      name: 'asdasdasd Development',
-      status: '',
-    },
-    {
-      name: 'Blockchain',
-      status: '',
-    },
-    {
-      name: 'Documentation',
-      status: '',
-    },
-    {
-      name: 'Frontend Development',
-      status: '',
-    },
-    {
-      name: 'Backend Development',
-      status: '',
-    },
-    {
-      name: 'Blockchain',
-      status: '',
-    },
-    {
-      name: 'Documentation',
-      status: '',
-    },
-    // Add more data items here...
-  ]
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('employee_token');
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          setDoke(decodedToken);
+
+          const API_URL = 'http://192.168.1.5:8000';
+          const response = await axios.get(`${API_URL}/viewtask`, { withCredentials: true });
+          setTasks(response.data.tasks.filter((task) => task.empName == decodedToken.name));
+          console.log("vanthuraa yeppa", decodedToken.name)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log("vanthuru da plsss", doke)
 
   const markTaskAsCompleted = (index) => {
-    const updatedData = [...data]
-    updatedData[index].status = 'Completed'
-    setData(updatedData)
-  }
+    const updatedTasks = [...task];
+    updatedTasks[index].status = 'Completed';
+    setTasks(updatedTasks);
+  };
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1)
-  }
+    setCurrentPage(currentPage + 1);
+  };
 
   const handlePrevPage = () => {
-    setCurrentPage(currentPage - 1)
-  }
+    setCurrentPage(currentPage - 1);
+  };
 
-  // Calculate start and end index based on current page and items per page
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
+  const [searchInput, setSearchInput] = useState('');
+  console.log("mamae crt ah vanthuru", task)
+  const filteredData = task ? task.filter((task) =>
+  task.task.toLowerCase().includes(searchInput.toLowerCase())
+) : [];
 
-  const visibleData = data.slice(startIndex, endIndex)
+console.log("vaa mamae vaa mamae", filteredData);
+
+
+
+  const renderRightActions = (task, index) => (
+    <TouchableOpacity
+      style={[styles.rightAction, { backgroundColor: 'red' }]}
+      onPress={() => {
+        Alert.alert(
+          'Mark As Completed',
+          task.name,
+          [
+            {
+              text: 'No',
+              style: 'cancel',
+            },
+            {
+              text: 'Yes',
+              onPress: () => markTaskAsCompleted(index),
+            },
+          ],
+          { cancelable: true }
+        );
+      }}
+    >
+      <Text style={styles.rightActionText}>View Task</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <View style={styles.boxContainer}>
-        <View style={[styles.box, styles.box1]} />
-        <View style={[styles.box, styles.box2]} />
-        <View style={[styles.box, styles.box3]} />
-      </View>
-      <Text style={styles.header}>Bezier Line Chart</Text>
-      {/* <LineChart
-        data={{
-          labels: ['Tasks'],
-          datasets: [
-            {
-              data: [
-                "Deadline"
-              ],
-            },
-          ],
-        }}
-        width={Dimensions.get('window').width - 16} // from react-native
-        height={220}
-        
-        chartConfig={{
-          backgroundColor: 'blue',
-          backgroundGradientFrom: 'blue',
-          backgroundGradientTo: '#efefef',
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 255) => `rgba(0, 0, 0, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      /> */}
-    
       <Text style={styles.header}>Pie Chart</Text>
-      <PieChart
-        data={[
-          {
-            name: 'Seoul',
-            population: 21500000,
-            color: 'rgba(131, 167, 234, 1)',
-            legendFontColor: '#7F7F7F',
-            legendFontSize: 15,
-          },
-          {
-            name: 'Toronto',
-            population: 2800000,
-            color: '#F00',
-            legendFontColor: '#7F7F7F',
-            legendFontSize: 15,
-          },
-         
-          {
-            name: 'Moscow',
-            population: 11920000,
-            color: 'rgb(0, 0, 255)',
-            legendFontColor: '#7F7F7F',
-            legendFontSize: 15,
-          },
-        ]}
-        width={Dimensions.get('window').width - 16}
-        height={220}
-        chartConfig={{
-          backgroundColor: '#1cc910',
-          backgroundGradientFrom: '#eff3ff',
-          backgroundGradientTo: '#efefef',
-          decimalPlaces: 2,
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-        }}
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-        accessor="population"
-        backgroundColor="transparent"
-        paddingLeft="15"
-        absolute 
-        ></PieChart>
-      <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.chartContainer}>
+        <PieChart
+          data={[
+            {
+              name: 'Seoul',
+              population: 21500000,
+              color: 'rgba(131, 167, 234, 1)',
+              legendFontColor: '#7F7F7F',
+              legendFontSize: 15,
+            },
+            {
+              name: 'Toronto',
+              population: 2800000,
+              color: '#F00',
+              legendFontColor: '#7F7F7F',
+              legendFontSize: 15,
+            },
+            {
+              name: 'Moscow',
+              population: 11920000,
+              color: 'rgb(0, 0, 255)',
+              legendFontColor: '#7F7F7F',
+              legendFontSize: 15,
+            },
+          ]}
+          width={Dimensions.get('window').width - 16}
+          height={220}
+          chartConfig={{
+            backgroundColor: '#eff3ff',
+            backgroundGradientFrom: '#eff3ff',
+            backgroundGradientTo: '#efefef',
+            decimalPlaces: 2,
+            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+          }}
+          accessor="population"
+          backgroundColor="transparent"
+          paddingLeft={15}
+          absolute
+        />
+      </View>
+
+      <SafeAreaView style={styles.contentContainer}>
         <ScrollView contentContainerStyle={styles.scrollContentContainer}>
           <View>
-            <Text style={styles.titlee}>RECENT TASKS</Text>
+            <Text style={styles.title}>Recent Tasks</Text>
             <View style={styles.searchBar}>
-              <TextInput style={styles.searchInput} placeholder="Search" />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search"
+                value={searchInput}
+                onChangeText={setSearchInput}
+              />
             </View>
             <View>
-              <Swipelist
-                data={visibleData}
-                renderRightItem={(task, index) => (
-                  <View
-                    key={index}
-                    style={[styles.cont, index > 0 && styles.gap]}
-                  >
-                    <Text>
-                      {startIndex + index + 1}. {task.name}
-                    </Text>
-
-                    <Text style={{ marginLeft: 270, marginTop: -15 }}>
-                      Swipe Left
-                    </Text>
-
+              {filteredData.map((task, index) => (
+                <Swipeable key={index} renderRightActions={() => renderRightActions(task, index)}>
+                  <View style={[styles.taskContainer, index > 0 && styles.taskGap]}>
+                    <Text style={styles.taskText}>{task.task}</Text>
+                    <Text >Status : {task.status}</Text>
+                    <Text style={styles.swipeText}>Swipe Left</Text>
                     <Icon
                       name="angle-double-left"
                       color="#517fa4"
-                      style={{ marginLeft: 350, marginTop: -20 }}
+                      style={styles.swipeIcon}
                       size={24}
                     />
                   </View>
-                )}
-                renderHiddenItem={(task, index) => (
-                  <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                    <TouchableOpacity
-                      style={[styles.rightAction, { backgroundColor: 'red' }]}
-                      onPress={() => {
-                        Alert.alert(
-                          'Mark As Completed',
-                          task.name,
-                          [
-                            {
-                              text: 'No',
-                              style: 'cancel',
-                            },
-                            {
-                              text: 'Yes',
-                              onPress: () =>
-                                markTaskAsCompleted(startIndex + index),
-                            },
-                          ],
-                          { cancelable: true }
-                        )
-                      }}
-                    >
-                      <Text>View Task</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                rightOpenValue={200}
-              />
+                </Swipeable>
+               ))} 
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
-    
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingVertical: 20,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  chartContainer: {
+    alignItems: 'center',
+    paddingTop: 20,
+    paddingHorizontal: 10,
+  },
+  contentContainer: {
+    flex: 1,
+  },
   scrollContentContainer: {
     flexGrow: 1,
     paddingVertical: 20,
     paddingHorizontal: 10,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 60,
-    backgroundColor: '#fff',
-  },
-  menuIcon: {
-    fontSize: 34,
-    paddingHorizontal: 10,
-  },
-  titlee: {
-    textAlign: 'center',
-
-    fontSize: 20,
-
-    margin: 10,
-
-    fontWeight: 'bold',
-  },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-  },
-  sideMenu: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  sideMenuItem: {
-    paddingVertical: 5,
-  },
-  sideMenuItemText: {
-    fontSize: 16,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-  boxContainer: {
-    flexDirection: 'row',
-    marginBottom: 20,
-  },
-  box: {
-    flex: 1,
-    height: 50,
-    borderRadius: 20,
-  },
-  box1: {
-    backgroundColor: 'red',
-    marginRight: 10,
-  },
-  box2: {
-    backgroundColor: 'blue',
-    marginRight: 10,
-  },
-  box3: {
-    backgroundColor: 'green',
-  },
-  tableContainer: {
-    marginTop: 20,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
+    textAlign: 'center',
+    marginBottom: 10,
   },
   searchBar: {
     flexDirection: 'row',
@@ -348,78 +223,53 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
   },
-  taskRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  taskContainer: {
+    height: 50,
+    marginVertical: 10,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  taskGap: {
     marginBottom: 10,
   },
   taskText: {
-    flex: 1,
     fontSize: 16,
+    fontWeight:"bolder"
   },
-  taskStatus: {
-    fontSize: 16,
-    marginRight: 10,
+  swipeText: {
+    position: 'absolute',
+    top: '50%',
+    right: 60,
+    transform: [{ translateY: -8 }],
+    color: '#888',
   },
-  viewTaskButton: {
-    backgroundColor: '#fff',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+  swipeIcon: {
+    position: 'absolute',
+    top: '50%',
+    right: 20,
+    transform: [{ translateY: -12 }],
   },
-  viewTaskButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  menuIcon: {
-    position: 'relative',
-    right: 100,
-    fontSize: 40,
-  },
-
-  cont: {
-    height: 30,
-
-    marginVertical: 10,
-
-    backgroundColor: '#fff',
-
-    justifyContent: 'center',
-
-    paddingLeft: 10,
-
-    shadowColor: '#000',
-
-    shadowOffset: {
-      width: 0,
-
-      height: 2,
-    },
-
-    shadowOpacity: 0.25,
-
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-
-  gap: {
-    marginBottom: 10,
-  },
-
   rightAction: {
-    marginVertical: 10,
-
-    alignItems: 'center',
-
     flex: 1,
-
     justifyContent: 'center',
-
-    height: 30,
-
-    backgroundColor: '#fff',
+    height: '70%',
+    backgroundColor: 'red',
+    position: 'relative',
+    top: 10,
   },
-})
+  rightActionText: {
+    color: '#fff',
+    paddingHorizontal: 12,
+  },
+});
 
-export default Dashboard
+export default Dashboard;
