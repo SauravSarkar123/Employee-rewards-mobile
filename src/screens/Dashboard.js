@@ -30,6 +30,8 @@ const Dashboard = () => {
   const [allTask, setAlltask] = useState(0);
   const [filtereddTasks, setFiltereddTasks] = useState([]);
         const [pending, setPending] = useState(0);
+        const [completed, setCompleted] = useState(0);
+
 
 
   useEffect(() => {
@@ -70,6 +72,15 @@ const Dashboard = () => {
                       }, 0);
             
                       setAlltask(alltaskks)
+
+                      const completedtasks = filteredTasks.reduce((count, task) => {
+                        if (task.status === 'Completed') {
+                          return count + 1;
+                        }
+                        return count;
+                      }, 0);
+            
+                      setCompleted(completedtasks)
                      
                     }
                   } catch (error) {
@@ -84,11 +95,26 @@ const Dashboard = () => {
 
   console.log("vanthuru da plsss", doke)
 
-  const markTaskAsCompleted = (index) => {
-    const updatedTasks = [...task];
-    updatedTasks[index].status = 'Completed';
-    setTasks(updatedTasks);
+
+  const markTaskAsCompleted = async (task, index) => {
+    try {
+      // const updatedTasks = task.slice(); // Create a shallow copy of the tasks array
+      // updatedTasks[index].status = 'Completed';
+      // setTasks(updatedTasks);
+  
+      // console.log(task)
+      // Make the PUT request to update the task status
+      const response = await axios.put(`${API_URL}/updatetask/${task._id}`, { status: 'Completed' });
+  
+      // Handle the response from the backend
+      console.log(response.data); // Optional: Print the response data or handle it as needed
+    } catch (error) {
+      console.log(error);
+      // Handle error scenarios
+    }
   };
+  
+
   const filterTasks = (status) => {
         if (status === 'all') {
           setFiltereddTasks(task);
@@ -115,31 +141,36 @@ const Dashboard = () => {
 console.log("vaa mamae vaa mamae", filteredData);
 
 
+const renderRightActions = (task, index,markTaskAsCompleted) => {
+  if (task.status === 'Pending') {
+    return (
+      <TouchableOpacity
+        style={[styles.rightAction, { backgroundColor: 'red', width: '50%' }]}
+        onPress={() => {
+          Alert.alert(
+            'Mark As Completed',
+            task.task,
+            [
+              {
+                text: 'No',
+                style: 'cancel',
+              },
+              {
+                text: 'Yes',
+                onPress: () => markTaskAsCompleted(task,index),
+              },
+            ],
+            { cancelable: true }
+          );
+        }}
+      >
+        <Text style={styles.rightActionText}>View Task</Text>
+      </TouchableOpacity>
+    );
+  }
+  return null; // Return null if the task status is not pending
+};
 
-  const renderRightActions = (task, index) => (
-    <TouchableOpacity
-      style={[styles.rightAction, { backgroundColor: 'red' }]}
-      onPress={() => {
-        Alert.alert(
-          'Mark As Completed',
-          `${task.task}\n${task.taskName}\n${task.taskDescription}\n${task.rewards}`,
-          [
-            {
-              text: 'No',
-              style: 'cancel',
-            },
-            {
-              text: 'Yes',
-              onPress: () => markTaskAsCompleted(index),
-            },
-          ],
-          { cancelable: true }
-        );
-      }}
-    >
-      <Text style={styles.rightActionText}>View Task</Text>
-    </TouchableOpacity>
-  );
 
   const handleLogout = async () => {
     try {
@@ -176,6 +207,13 @@ console.log("vaa mamae vaa mamae", filteredData);
               name: 'All tasks',
               population: allTask,
               color: 'rgb(0, 0, 255)',
+              legendFontColor: '#7F7F7F',
+              legendFontSize: 12,
+            },
+            {
+              name: 'Completed',
+              population: completed,
+              color: 'rgb(40, 130, 255)',
               legendFontColor: '#7F7F7F',
               legendFontSize: 12,
             },
@@ -233,7 +271,8 @@ console.log("vaa mamae vaa mamae", filteredData);
 </View> 
             <View>
               {filteredData.map((task, index) => (
-                <Swipeable key={index} renderRightActions={() => renderRightActions(task, index)}>
+                <Swipeable   style={styles.swipe}
+                key={index} renderRightActions={() => renderRightActions(task, index)}>
                   <View style={[styles.taskContainer, index > 0 && styles.taskGap]}>
                     <Text style={styles.taskText}>{task.task}</Text>
                     <Text >Status : {task.status}</Text>
@@ -259,6 +298,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  swipe : {
+    width: 10
   },
   header: {
     fontSize: 24,
