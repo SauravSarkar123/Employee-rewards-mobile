@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import {
   View,
   Text,
@@ -11,26 +11,23 @@ import {
   ScrollView, // Import ScrollView
 } from 'react-native'
 import Swipelist from 'react-native-swipeable-list-view'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {
 
   PieChart,  LineChart
   
 } from 'react-native-chart-kit';
-import { useCookies } from "react-cookie";
-
+import jwtDecode from 'jwt-decode'
+import axios from "axios";
 
 const Dashboard = () => {
+  const [tasks, setTasks] = useState([]);
+  const API_URL = 'http://localhost:8000';
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 4
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "employee_token",
-  ]);
-   AsyncStorage.setItem('employee_token', cookies);
-console.log(AsyncStorage.getItem('employee_token'))
+  const itemsPerPage = 9
+ 
 
   const data = [
     {
@@ -84,6 +81,30 @@ console.log(AsyncStorage.getItem('employee_token'))
     // Add more data items here...
   ]
 
+  useEffect(async()=>{
+    const cookiee = await AsyncStorage.getItem("employee_token");
+    console.log("Cookie",cookiee)
+    const toke = jwtDecode(cookiee)
+    console.log("asdddddddddddddddddddddddd",toke.name)
+
+    axios
+    .get(`${API_URL}/viewtask`,
+    { withCredentials: true })
+    .then((response) => {
+      setTasks(
+        response.data.tasks.filter((tasks) => tasks.empName == toke.name)
+      );
+      console.log(response.data.tasks)
+      console.log(tasks)
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  },[])
+
+
+
   const markTaskAsCompleted = (index) => {
     const updatedData = [...data]
     updatedData[index].status = 'Completed'
@@ -98,11 +119,9 @@ console.log(AsyncStorage.getItem('employee_token'))
     setCurrentPage(currentPage - 1)
   }
 
-  // Calculate start and end index based on current page and items per page
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
 
-  const visibleData = data.slice(startIndex, endIndex)
+
+  const visibleData = tasks.slice(5)
 
   return (
     <View style={styles.container}>
@@ -198,59 +217,60 @@ console.log(AsyncStorage.getItem('employee_token'))
               <TextInput style={styles.searchInput} placeholder="Search" />
             </View>
             <View>
-              <Swipelist
-                data={visibleData}
-                renderRightItem={(task, index) => (
-                  <View
-                    key={index}
-                    style={[styles.cont, index > 0 && styles.gap]}
-                  >
-                    <Text>
-                      {startIndex + index + 1}. {task.name}
-                    </Text>
+  <Swipelist
+    data={visibleData}
+    renderRightItem={(tasks, index) => (
+      <View
+        key={index}
+        style={[styles.cont, index > 0 && styles.gap]}
+      >
+        <Text>
+          {startIndex + index + 1}. {tasks._id}
+        </Text>
 
-                    <Text style={{ marginLeft: 270, marginTop: -15 }}>
-                      Swipe Left
-                    </Text>
+        <Text style={{ marginLeft: 270, marginTop: -15 }}>
+          Swipe Left
+        </Text>
 
-                    <Icon
-                      name="angle-double-left"
-                      color="#517fa4"
-                      style={{ marginLeft: 350, marginTop: -20 }}
-                      size={24}
-                    />
-                  </View>
-                )}
-                renderHiddenItem={(task, index) => (
-                  <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                    <TouchableOpacity
-                      style={[styles.rightAction, { backgroundColor: 'red' }]}
-                      onPress={() => {
-                        Alert.alert(
-                          'Mark As Completed',
-                          task.name,
-                          [
-                            {
-                              text: 'No',
-                              style: 'cancel',
-                            },
-                            {
-                              text: 'Yes',
-                              onPress: () =>
-                                markTaskAsCompleted(startIndex + index),
-                            },
-                          ],
-                          { cancelable: true }
-                        )
-                      }}
-                    >
-                      <Text>View Task</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                rightOpenValue={200}
-              />
-            </View>
+        <Icon
+          name="angle-double-left"
+          color="#517fa4"
+          style={{ marginLeft: 350, marginTop: -20 }}
+          size={24}
+        />
+      </View>
+    )}
+    renderHiddenItem={(task, index) => (
+      <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+        <TouchableOpacity
+          style={[styles.rightAction, { backgroundColor: 'red' }]}
+          onPress={() => {
+            Alert.alert(
+              'Mark As Completed',
+              task.taskName,
+              [
+                {
+                  text: 'No',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Yes',
+                  onPress: () =>
+                    markTaskAsCompleted(startIndex + index),
+                },
+              ],
+              { cancelable: true }
+            )
+          }}
+        >
+          <Text>View Task</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+    rightOpenValue={200}
+  />
+</View>
+
           </View>
         </ScrollView>
       </SafeAreaView>

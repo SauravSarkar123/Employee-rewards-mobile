@@ -32,7 +32,7 @@ export default function App() {
   useEffect(() => {
     setTimeout(() => {
       setShowLogo(false);
-    }, 1000); // 3 seconds
+    }, 1000);
   }, []);
 
   return (
