@@ -8,6 +8,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage } from './src/screens';
 import LogoScreen from './src/screens/LogoScreen';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
+import { IconButton } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -82,4 +84,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
+  
 });

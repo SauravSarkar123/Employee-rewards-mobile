@@ -19,6 +19,7 @@
     "@react-navigation/stack": "^6.3.16",
     "@ui-kitten/components": "^5.3.1",
     "axios": "^1.4.0",
+    "ethers": "^6.4.0",
     "expo": "~48.0.15",
     "expo-av": "^13.2.1",
     "expo-barcode-scanner": "^12.3.2",
@@ -26,6 +27,7 @@
     "expo-document-picker": "^11.2.2",
     "expo-status-bar": "~1.4.4",
     "expo-web-browser": "^12.1.1",
+    "http": "^0.0.1-security",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^3.1.2",
     "react": "18.2.0",
@@ -47,6 +49,7 @@
     "react-native-swipeable-list-view": "^0.1.2",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.10",
+    "walletconnect": "^1.7.8",
     "xdc3": "^1.3.13416"
   },
   "devDependencies": {
