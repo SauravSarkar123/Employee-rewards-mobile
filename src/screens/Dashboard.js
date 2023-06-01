@@ -122,7 +122,7 @@ console.log("vaa mamae vaa mamae", filteredData);
       onPress={() => {
         Alert.alert(
           'Mark As Completed',
-          task.name,
+          `${task.task}\n${task.taskName}\n${task.taskDescription}\n${task.rewards}`,
           [
             {
               text: 'No',
@@ -152,10 +152,9 @@ console.log("vaa mamae vaa mamae", filteredData);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+      {/* <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
         <Text style={styles.logoutButtonText}>Logout</Text>
-      </TouchableOpacity>
-      <Text style={styles.header}>Pie Chart</Text>
+      </TouchableOpacity> */}
       <View style={styles.chartContainer}>
         <PieChart
           data={[
