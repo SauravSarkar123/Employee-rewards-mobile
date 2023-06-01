@@ -20,7 +20,7 @@ import Cookie from "js-cookie"
 
 
 
-const API_URL = 'http://localhost:8000';
+const API_URL = 'http://192.168.1.5:8000';
 
 export default function SignInPage({ navigation }) {
   // const [email, setEmail] = useState({ value: '', error: '' });
@@ -106,7 +106,7 @@ export default function SignInPage({ navigation }) {
           Login
         </Button>
         <View style={styles.row}>
-<Text style={styles.label}>Don’t have an account? </Text>
+<Text style={styles.label}>Don't have an account? </Text>
 <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
 <Text style={styles.link}>Sign up</Text>
 </TouchableOpacity>
