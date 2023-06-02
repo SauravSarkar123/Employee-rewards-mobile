@@ -37,6 +37,7 @@ import AWS from "aws-sdk";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import allAward from "./routes/company/getaward.js";
+import updateuserprofile from "./routes/employee/updateuserprofile.js"
 
 const app = express()
 dotenv.config();
@@ -153,6 +154,7 @@ app.use("/", award)
 app.use("/", updateprofileee)
 app.use("/", awardedemployee)
 app.use("/", allAward)
+app.use("/",updateuserprofile)
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", corsOptions);
   res.header("Access-Control-Allow-Credentials", true);

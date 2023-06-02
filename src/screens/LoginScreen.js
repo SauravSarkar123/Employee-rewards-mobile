@@ -16,7 +16,7 @@ import { theme } from '../core/theme';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'http://192.168.26.131:8000';
+const API_URL = 'http://192.168.26.7:8000';
 
 export default function SignInPage({ navigation }) {
   const [name, setName] = useState('');
