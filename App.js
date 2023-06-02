@@ -4,13 +4,8 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { theme } from './src/core/theme';
-import {
-  LoginScreen,
-  RegisterScreen,
-  ResetPasswordScreen,
-  Dashboard,
-  LandingPage,
-} from './src/screens';
+import { View, Text, StyleSheet } from 'react-native';
+import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage } from './src/screens';
 import LogoScreen from './src/screens/LogoScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import EmployeeProfile from './src/screens/EmployeeProfile';
@@ -22,7 +17,7 @@ function DrawerRoutes() {
   return (
     <Drawer.Navigator initialRouteName="Dashboard">
       <Drawer.Screen name="Dashboard" component={Dashboard} />
-      <Drawer.Screen name="User Profile" component={EmployeeProfile} />
+      <Drawer.Screen name="Landing" component={LandingPage} />
     </Drawer.Navigator>
   );
 }
@@ -54,6 +49,8 @@ export default function App() {
             component={ResetPasswordScreen}
           />
           <Stack.Screen name="LogoScreen" component={LogoScreen} />
+          <Stack.Screen name="Award" component={Award} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

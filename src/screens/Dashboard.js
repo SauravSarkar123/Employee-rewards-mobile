@@ -31,7 +31,9 @@ const Dashboard = () => {
   const [filtereddTasks, setFiltereddTasks] = useState([]);
         const [pending, setPending] = useState(0);
         const [completed, setCompleted] = useState(0);
+        const [taskUpdate,setTaskUpdate] = useState(false)
 
+        const API_URL = 'http://192.168.26.131:8000';
 
 
   useEffect(() => {
@@ -42,9 +44,10 @@ const Dashboard = () => {
                       const decodedToken = jwtDecode(token);
                       setDoke(decodedToken);
               
-                      const API_URL = 'http://192.168.26.7:8000';
+                      const API_URL = 'http://192.168.26.131:8000';
                       const response = await axios.get(`${API_URL}/viewtask`, { withCredentials: true });
                       const filteredTasks = response.data.tasks.filter((task) => task.empName === decodedToken.name);
+                      setFiltereddTasks(task);
                       setTasks(filteredTasks);
                       
                       const pendingTasksCount = filteredTasks.reduce((count, task) => {
@@ -91,30 +94,81 @@ const Dashboard = () => {
                 fetchData();
               }, []);
               
+              useEffect(() => {
+                const fetchData = async () => {
+                  try {
+                    const token = await AsyncStorage.getItem('employee_token');
+                    if (token) {
+                      const decodedToken = jwtDecode(token);
+                      setDoke(decodedToken);
+              
+                      const response = await axios.get(`${API_URL}/viewtask`, { withCredentials: true });
+                      const filteredTasks = response.data.tasks.filter((task) => task.empName === decodedToken.name);
+                      setFiltereddTasks(task);
+                      setTasks(filteredTasks);
+                      
+                      const pendingTasksCount = filteredTasks.reduce((count, task) => {
+                        if (task.status === 'Pending') {
+                          return count + 1;
+                        }
+                        return count;
+                      }, 0);
             
+                      setPending(pendingTasksCount)
+            
+                      const rewardtasks = filteredTasks.reduce((count, task) => {
+                        if (task.status === 'Rewarded') {
+                          return count + 1;
+                        }
+                        return count;
+                      }, 0);
+            
+                      setRewarded(rewardtasks)
+            
+                      const alltaskks = filteredTasks.reduce((count, task) => {
+                       
+                          return count + 1;
+                        
+                      }, 0);
+            
+                      setAlltask(alltaskks)
+
+                      const completedtasks = filteredTasks.reduce((count, task) => {
+                        if (task.status === 'Completed') {
+                          return count + 1;
+                        }
+                        return count;
+                      }, 0);
+            
+                      setCompleted(completedtasks)
+                     
+                    }
+                  } catch (error) {
+                    console.log(error);
+                  }
+                };
+              
+                fetchData();
+              }, [taskUpdate]);         
 
   console.log("vanthuru da plsss", doke)
 
+  
 
-  const markTaskAsCompleted = async (task, index) => {
+  const markTaskAsCompleted = async (tasks) => {
     try {
-      // const updatedTasks = task.slice(); // Create a shallow copy of the tasks array
-      // updatedTasks[index].status = 'Completed';
-      // setTasks(updatedTasks);
+      const response = await axios.put(`${API_URL}/updatetaskkk/${tasks._id}`, {
+        status: 'Completed',
+      });
   
-      // console.log(task)
-      // Make the PUT request to update the task status
-      const response = await axios.put(`${API_URL}/updatetask/${task._id}`, { status: 'Completed' });
+      console.log(response.data);
+      setTaskUpdate(true)
   
-      // Handle the response from the backend
-      console.log(response.data); // Optional: Print the response data or handle it as needed
     } catch (error) {
       console.log(error);
-      // Handle error scenarios
     }
   };
   
-
   const filterTasks = (status) => {
         if (status === 'all') {
           setFiltereddTasks(task);
@@ -141,23 +195,18 @@ const Dashboard = () => {
 console.log("vaa mamae vaa mamae", filteredData);
 
 
-const renderRightActions = (task, index,markTaskAsCompleted) => {
-  if (task.status === 'Pending') {
+const renderRightActions = (task, index) => {
+  if (task.status === 'Rewarded') {
     return (
       <TouchableOpacity
-        style={[styles.rightAction, { backgroundColor: 'red', width: '50%' }]}
+        style={[styles.rightAction, { backgroundColor: '#0000FF', width: '50%' }]}
         onPress={() => {
           Alert.alert(
-            'Mark As Completed',
-            task.task,
+            'Rewarded Task',
+            `Task Name: ${task.task}\nTask Description: ${task.taskDescription}\nRewards : ${task.rewards}`,
             [
               {
-                text: 'No',
-                style: 'cancel',
-              },
-              {
-                text: 'Yes',
-                onPress: () => markTaskAsCompleted(task,index),
+                text: 'View Certificate',
               },
             ],
             { cancelable: true }
@@ -168,7 +217,56 @@ const renderRightActions = (task, index,markTaskAsCompleted) => {
       </TouchableOpacity>
     );
   }
-  return null; // Return null if the task status is not pending
+  if (task.status === 'Pending') {
+    return (
+      <TouchableOpacity
+        style={[styles.rightAction, { backgroundColor: '#0000FF', width: '50%' }]}
+        onPress={() => {
+          Alert.alert(
+            'Mark As Completed',
+            `Task Name: ${task.task}\nTask Description: ${task.taskDescription}\nRewards : ${task.rewards}`,
+            [
+              {
+                text: 'No',
+                style: 'cancel',
+              },
+              {
+                text: 'Yes',
+                onPress: () => markTaskAsCompleted(task, index),
+              },
+            ],
+            { cancelable: true }
+          );
+        }}
+      >
+        <Text style={styles.rightActionText}>View Task</Text>
+      </TouchableOpacity>
+    );
+  }
+  if (task.status === 'Completed') {
+    return (
+      <TouchableOpacity
+        style={[styles.rightAction, { backgroundColor: '#0000FF', width: '50%' }]}
+        onPress={() => {
+          Alert.alert(
+            'Waiting For Approval',
+            `Task Name: ${task.task}\nTask Description: ${task.taskDescription}\nRewards : ${task.rewards}`,
+            [
+             
+              {
+                text: 'Ok',
+              },
+            ],
+            { cancelable: true }
+          );
+        }}
+      >
+        <Text style={styles.rightActionText}>View Task</Text>
+      </TouchableOpacity>
+    );
+  }
+ 
+  return null; // Return null if the task status is not pending or rewarded
 };
 
 
@@ -190,6 +288,13 @@ const renderRightActions = (task, index,markTaskAsCompleted) => {
         <PieChart
           data={[
             {
+              name: 'All tasks',
+              population: allTask,
+              color: '#0000FF',
+              legendFontColor: '#7F7F7F',
+              legendFontSize: 12,
+            },
+            {
               name: 'Pending',
               population: pending,
               color: 'rgba(131, 167, 234, 1)',
@@ -199,17 +304,11 @@ const renderRightActions = (task, index,markTaskAsCompleted) => {
             {
               name: 'Rewarded',
               population: rewardedTask,
-              color: '#F00',
+              color: '#55DCF7',
               legendFontColor: '#7F7F7F',
               legendFontSize: 12,
             },
-            {
-              name: 'All tasks',
-              population: allTask,
-              color: 'rgb(0, 0, 255)',
-              legendFontColor: '#7F7F7F',
-              legendFontSize: 12,
-            },
+           
             {
               name: 'Completed',
               population: completed,
@@ -240,7 +339,7 @@ const renderRightActions = (task, index,markTaskAsCompleted) => {
       <SafeAreaView style={styles.contentContainer}>
         <ScrollView contentContainerStyle={styles.scrollContentContainer}>
           <View>
-            <Text style={styles.title}>Recent Tasks</Text>
+            <Text style={styles.title}> Tasks</Text>
             <View style={styles.searchBar}>
               <TextInput
                 style={styles.searchInput}
@@ -279,7 +378,7 @@ const renderRightActions = (task, index,markTaskAsCompleted) => {
                     <Text style={styles.swipeText}>Swipe Left</Text>
                     <Icon
                       name="angle-double-left"
-                      color="#517fa4"
+                      color="#0000FF"
                       style={styles.swipeIcon}
                       size={24}
                     />
@@ -300,7 +399,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   swipe : {
-    width: 10
+    width: 10,
   },
   header: {
     fontSize: 24,
@@ -308,8 +407,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 20,
     backgroundColor: '#fff',
-    // borderBottom\Width: 1,
-    // borderBottomColor: '#ccc',
     position:"relative",
     top:40
   },
@@ -383,7 +480,7 @@ const styles = StyleSheet.create({
     top: '50%',
     right: 60,
     transform: [{ translateY: -8 }],
-    color: '#888',
+    color: '#0000FF',
   },
   swipeIcon: {
     position: 'absolute',
@@ -391,17 +488,19 @@ const styles = StyleSheet.create({
     right: 20,
     transform: [{ translateY: -12 }],
   },
+
   rightAction: {
     flex: 1,
     justifyContent: 'center',
     height: '70%',
-    backgroundColor: 'red',
     position: 'relative',
     top: 10,
+    color: "#0000FF"
   },
   rightActionText: {
     color: '#fff',
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
+    textAlign: 'center'
   },
   buttonContainer: {
         flexDirection: 'row',
@@ -411,11 +510,11 @@ const styles = StyleSheet.create({
       filterButton: {
         paddingHorizontal: 15,
         paddingVertical: 8,
-        borderRadius: 20,
+        borderRadius: 10,
         marginHorizontal: 5,
         marginLeft: 10,
         width: 100,
-        backgroundColor: '#000',
+        backgroundColor: '#0000FF',
       },
       filterButtonText: {
         fontSize: 14,
@@ -430,3 +529,4 @@ const styles = StyleSheet.create({
 });
 
 export default Dashboard;
+
