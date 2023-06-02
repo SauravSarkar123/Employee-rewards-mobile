@@ -406,8 +406,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 20,
     backgroundColor: '#fff',
-    // borderBottom\Width: 1,
-    // borderBottomColor: '#ccc',
     position:"relative",
     top:40
   },

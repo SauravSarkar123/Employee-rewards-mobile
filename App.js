@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { theme } from './src/core/theme';
 import { View, Text, StyleSheet } from 'react-native';
-import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage, Analytics } from './src/screens';
+import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage, Award } from './src/screens';
 import LogoScreen from './src/screens/LogoScreen';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import { IconButton } from 'react-native-paper';
@@ -36,7 +36,7 @@ function DrawerRoutes(props) {
     >
       <Drawer.Screen name="Dashboard" component={Dashboard} />
       <Drawer.Screen name="Landing" component={LandingPage} />
-      <Drawer.Screen name="Analytics" component={Analytics}/>
+      <Drawer.Screen name="Awards" component={Award}/>
     </Drawer.Navigator>
   );
 }
@@ -65,7 +65,7 @@ export default function App() {
           <Stack.Screen name="Landing" component={LandingPage} />
           <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
           <Stack.Screen name="LogoScreen" component={LogoScreen} />
-          <Stack.Screen name="Analytics" component={Analytics} />
+          <Stack.Screen name="Award" component={Award} />
 
         </Stack.Navigator>
       </NavigationContainer>
