@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { theme } from './src/core/theme';
 import { View, Text, StyleSheet } from 'react-native';
-import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage } from './src/screens';
+import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage, Award } from './src/screens';
 import LogoScreen from './src/screens/LogoScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import EmployeeProfile from './src/screens/EmployeeProfile';
@@ -18,6 +18,7 @@ function DrawerRoutes() {
     <Drawer.Navigator initialRouteName="Dashboard">
       <Drawer.Screen name="Dashboard" component={Dashboard} />
       <Drawer.Screen name="Landing" component={LandingPage} />
+      <Drawer.Screen name="Awards" component={Award}/>
     </Drawer.Navigator>
   );
 }

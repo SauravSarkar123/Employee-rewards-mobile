@@ -44,7 +44,6 @@ const Dashboard = () => {
                       const decodedToken = jwtDecode(token);
                       setDoke(decodedToken);
               
-                      const API_URL = 'http://192.168.26.131:8000';
                       const response = await axios.get(`${API_URL}/viewtask`, { withCredentials: true });
                       const filteredTasks = response.data.tasks.filter((task) => task.empName === decodedToken.name);
                       setFiltereddTasks(task);
