@@ -5,38 +5,42 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { theme } from './src/core/theme';
 import { View, Text, StyleSheet } from 'react-native';
-import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage, Analytics } from './src/screens';
+import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage, Award } from './src/screens';
 import LogoScreen from './src/screens/LogoScreen';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import { IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ProfilePage from './src/screens/ProfilePage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+const LogOut = () => {
+  const navigation = useNavigation();
 
-function DrawerRoutes(props) {
+  useEffect(() => {
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [{ name: 'Landing' }],
+    });
+
+    navigation.dispatch(resetAction);
+  }, [navigation]);
+
+  return <Text>Logging out...</Text>;
+};
+
+function DrawerRoutes() {
   return (
-    <Drawer.Navigator
-      initialRouteName="Dashboard"
-      screenOptions={{
-        drawerStyle: { backgroundColor: 'white' },
-        contentContainerStyle: { flex: 1 },
-        headerStyle: { backgroundColor: '#E6FFFD' },
-        drawerContentOptions: {
-          activeTintColor: 'white',
-          inactiveTintColor: 'gray',
-        },
-      }}
-      drawerContent={drawerProps => (
-        <View style={styles.drawerHeader}>
-          <Text style={styles.drawerHeaderText}>My App</Text>
-          <DrawerItemList {...drawerProps} />
-        </View>
-      )}
-    >
+    <Drawer.Navigator initialRouteName="Dashboard">
       <Drawer.Screen name="Dashboard" component={Dashboard} />
-      <Drawer.Screen name="Landing" component={LandingPage} />
-      <Drawer.Screen name="Analytics" component={Analytics}/>
+      <Drawer.Screen name="Awards" component={Award}/>
+      <Drawer.Screen name="Profile" component={ProfilePage}/>
+      <Drawer.Screen name="Log Out" component={LogOut}/>
+
+
+
+      
+
     </Drawer.Navigator>
   );
 }
@@ -63,29 +67,17 @@ export default function App() {
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
           <Stack.Screen name="Dashboard" component={DrawerRoutes} />
           <Stack.Screen name="Landing" component={LandingPage} />
-          <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+          <Stack.Screen
+            name="ResetPasswordScreen"
+            component={ResetPasswordScreen}
+          />
           <Stack.Screen name="LogoScreen" component={LogoScreen} />
-          <Stack.Screen name="Analytics" component={Analytics} />
+          <Stack.Screen name="Award" component={Award} />
+          <Stack.Screen name="Profile" component={ProfilePage} />
+
 
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  drawerHeader: {
-    backgroundColor: 'white',
-    paddingVertical: 20,
-    paddingHorizontal: 16,
-    borderBottomColor: 'white',
-    borderBottomWidth: 1,
-  },
-  drawerHeaderText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  
-});

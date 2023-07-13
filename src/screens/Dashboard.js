@@ -150,7 +150,6 @@ const Dashboard = () => {
                 fetchData();
               }, [taskUpdate]);         
 
-  console.log("vanthuru da plsss", doke)
 
   
 
@@ -186,7 +185,6 @@ const Dashboard = () => {
   };
 
   const [searchInput, setSearchInput] = useState('');
-  console.log("mamae crt ah vanthuru", task)
    const filteredData = filtereddTasks ? filtereddTasks.filter((t) =>
   t.task.toLowerCase().includes(searchInput.toLowerCase())
 ) : [];
@@ -367,23 +365,25 @@ const renderRightActions = (task, index) => {
   <Text style={styles.filterButtonText}>Rewarded</Text>
 </TouchableOpacity>
 </View> 
-            <View>
-              {filteredData.map((task, index) => (
-                <Swipeable   style={styles.swipe}
-                key={index} renderRightActions={() => renderRightActions(task, index)}>
+<View>
+            {filteredData.length === 0 ? (
+              <Text style={styles.noTasksText}>No tasks</Text>
+            ) : (
+              filteredData.map((task, index) => (
+                <Swipeable
+                  style={styles.swipe}
+                  key={index}
+                  renderRightActions={() => renderRightActions(task, index)}
+                >
                   <View style={[styles.taskContainer, index > 0 && styles.taskGap]}>
                     <Text style={styles.taskText}>{task.task}</Text>
-                    <Text >Status : {task.status}</Text>
+                    <Text>Status: {task.status}</Text>
                     <Text style={styles.swipeText}>Swipe Left</Text>
-                    <Icon
-                      name="angle-double-left"
-                      color="#0000FF"
-                      style={styles.swipeIcon}
-                      size={24}
-                    />
+                    <Icon name="angle-double-left" color="#0000FF" style={styles.swipeIcon} size={24} />
                   </View>
                 </Swipeable>
-               ))} 
+              ))
+            )}
             </View>
           </View>
         </ScrollView>
@@ -406,8 +406,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 20,
     backgroundColor: '#fff',
-    // borderBottom\Width: 1,
-    // borderBottomColor: '#ccc',
     position:"relative",
     top:40
   },
@@ -476,6 +474,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight:"bolder"
   },
+  noTasksText: {
+    fontSize: 20,
+    marginLeft: 120,
+    marginTop: 40,
+    width:100,
+    borderRadius: 10,
+    color:'black',
+    padding: 10,
+
+  },
   swipeText: {
     position: 'absolute',
     top: '50%',
@@ -515,7 +523,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         marginLeft: 10,
         width: 100,
-        backgroundColor: '#0000FF',
+        backgroundColor: '#8A8AFB',
       },
       filterButtonText: {
         fontSize: 14,
