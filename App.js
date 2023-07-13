@@ -10,6 +10,7 @@ import LogoScreen from './src/screens/LogoScreen';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import { IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ProfilePage from './src/screens/ProfilePage';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
