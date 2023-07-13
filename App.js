@@ -7,12 +7,30 @@ import { theme } from './src/core/theme';
 import { View, Text, StyleSheet } from 'react-native';
 import { LoginScreen, RegisterScreen, ResetPasswordScreen, Dashboard, LandingPage, Award } from './src/screens';
 import LogoScreen from './src/screens/LogoScreen';
+import ProfilePage from './src/screens/ProfilePage';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import { IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation, CommonActions } from '@react-navigation/native';
+
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+const LogOut = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [{ name: 'Landing' }],
+    });
+
+    navigation.dispatch(resetAction);
+  }, [navigation]);
+
+  return <Text>Logging out...</Text>;
+};
 
 function DrawerRoutes(props) {
   return (
@@ -35,8 +53,14 @@ function DrawerRoutes(props) {
       )}
     >
       <Drawer.Screen name="Dashboard" component={Dashboard} />
-      <Drawer.Screen name="Landing" component={LandingPage} />
       <Drawer.Screen name="Awards" component={Award}/>
+      <Drawer.Screen name="Profile" component={ProfilePage}/>
+      <Drawer.Screen name="Log Out" component={LogOut}/>
+
+
+
+      
+
     </Drawer.Navigator>
   );
 }
@@ -66,6 +90,8 @@ export default function App() {
           <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
           <Stack.Screen name="LogoScreen" component={LogoScreen} />
           <Stack.Screen name="Award" component={Award} />
+          <Stack.Screen name="Profile" component={ProfilePage} />
+
 
         </Stack.Navigator>
       </NavigationContainer>

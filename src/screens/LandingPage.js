@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 
   button1: {
     
-    backgroundColor: '#0000FF',
+    backgroundColor: '#D7D7F1',
     borderRadius: 10,
     paddingVertical: 12,
     width: 100,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   button2: {
     
-    backgroundColor: '#0000FF',
+    backgroundColor: '#D7D7F1',
     borderRadius: 10,
     paddingVertical: 12,
     width: 200,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 
   },
   buttonText: {
-    color: '#fff',
+    color: '#000',
     textAlign: 'center',
     fontWeight: 'bold'
   },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     position:"relative",
     bottom:100,
     fontWeight: 'bold'
-  },
+  }
 });
 
   return (
