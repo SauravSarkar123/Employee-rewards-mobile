@@ -13,8 +13,8 @@ import axios from 'axios'
 
 
 export default function RegisterScreen({ navigation }) {
-const API_URL = 'http://192.168.26.131:8000';
-const [name, setName] = useState('')
+  const API_URL = 'http://192.168.26.131:19000';
+  const [name, setName] = useState('')
   const [nameError, setNameError] = useState('')
 
   const [password, setPassword] = useState('')

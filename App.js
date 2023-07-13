@@ -11,6 +11,7 @@ import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import { IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ProfilePage from './src/screens/ProfilePage';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();

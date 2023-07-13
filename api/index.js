@@ -120,7 +120,7 @@ mongoose.connection.on("connected", ()=>{
     console.log("Mongodb connected")
 })
 const corsOptions = {
-  origin: ['http://localhost:19006', 'http://192.168.26.107:19000'],
+  origin: ['http://localhost:19006', 'http://192.168.26.131:19000'],
   credentials: true,
 };
 
